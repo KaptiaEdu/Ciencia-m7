@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kaptia Ciencias — Cadenas Alimentarias (Santiago 4°B)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #F4F7FB;
+      --card: #FFFFFF;
+      --ink: #1E293B;
+      --muted: #64748B;
+      --green: #10B981;
+      --green-soft: #ECFDF5;
+      --green-dark: #059669;
+      --blue: #3B82F6;
+      --blue-soft: #EFF6FF;
+      --blue-dark: #2563EB;
+      --amber: #F59E0B;
+      --amber-soft: #FFFBEB;
+      --amber-dark: #B45309;
+      --purple: #8B5CF6;
+      --purple-soft: #F5F3FF;
+      --red: #EF4444;
+      --red-soft: #FEF2F2;
+      --radius: 22px;
+      --shadow: 0 8px 0 rgba(30, 41, 59, 0.08);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Lexend', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.5;
+    }
+
+    body.large-font { font-size: 1.15rem; }
+
+    /* TOP BAR */
+    header {
+      background: var(--card);
+      border-bottom: 3px solid #E2E8F0;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .brand { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+    .brand-badge { background: var(--green); color: white; font-weight: 800; padding: 6px 12px; border-radius: 12px; font-size: 1rem; }
+    .brand-title { font-weight: 800; font-size: 1.02rem; color: var(--ink); }
+
+    .top-controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .points-pill {
+      background: var(--amber-soft); border: 2px solid #FDE68A; color: var(--amber-dark);
+      font-weight: 800; padding: 6px 14px; border-radius: 999px; display: flex; align-items: center; gap: 6px;
+    }
+    .club-pill {
+      background: #ECFDF5; border: 2px solid #6EE7B7; color: #065F46; font-weight: 800;
+      padding: 6px 14px; border-radius: 999px; cursor: pointer; font-family: inherit;
+      font-size: 0.9rem; display: flex; align-items: center; gap: 6px; transition: transform 0.12s;
+    }
+    .club-pill:hover { transform: translateY(-1px); background: #D1FAE5; }
+
+    .icon-btn {
+      background: #F1F5F9; border: 2px solid #CBD5E1; color: var(--ink); padding: 6px 12px;
+      border-radius: 12px; font-family: inherit; font-weight: 700; cursor: pointer; transition: transform 0.12s;
+    }
+    .icon-btn:active { transform: translateY(2px); }
+
+    /* MAIN CONTAINER */
+    main {
+      flex: 1; max-width: 900px; width: 100%; margin: 0 auto;
+      padding: 24px 16px 44px; display: flex; flex-direction: column; justify-content: center;
+    }
+
+    /* HOME SCREEN */
+    .hero { text-align: center; margin-bottom: 24px; }
+    .hero h1 { font-size: 1.8rem; font-weight: 800; margin-bottom: 6px; }
+    .hero p { color: var(--muted); font-size: 1rem; }
+
+    .modules-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; }
+    .mod-card {
+      background: var(--card); border: 3px solid #E2E8F0; border-radius: var(--radius);
+      padding: 22px; box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 10px;
+      transition: transform 0.15s, border-color 0.15s;
+    }
+    .mod-card.ready { cursor: pointer; }
+    .mod-card.ready:hover { transform: translateY(-3px); border-color: var(--green); }
+    .mod-card.football-card { border-color: #10B981; background: linear-gradient(180deg, #FFFFFF 0%, #ECFDF5 100%); }
+    .mod-card.locked { opacity: 0.65; background: #F8FAFC; }
+
+    .mod-icon { font-size: 2.5rem; }
+    .mod-tag { display: inline-block; font-size: 0.78rem; font-weight: 800; padding: 4px 10px; border-radius: 999px; width: fit-content; }
+    .tag-green { background: var(--green-soft); color: var(--green-dark); }
+    .tag-blue { background: var(--blue-soft); color: var(--blue-dark); }
+    .tag-purple { background: var(--purple-soft); color: var(--purple); }
+    .tag-amber { background: var(--amber-soft); color: var(--amber-dark); }
+    .tag-locked { background: #E2E8F0; color: #475569; }
+
+    .mod-card h2 { font-size: 1.2rem; font-weight: 800; }
+    .mod-card p { font-size: 0.92rem; color: var(--muted); flex: 1; }
+
+    .btn-primary {
+      background: var(--green); color: white; border: none; border-bottom: 4px solid var(--green-dark);
+      padding: 13px 22px; border-radius: 16px; font-family: inherit; font-size: 1rem; font-weight: 800;
+      cursor: pointer; transition: transform 0.1s;
+    }
+    .btn-primary:hover { filter: brightness(1.04); }
+    .btn-primary:active { transform: translateY(2px); border-bottom-width: 2px; }
+    .btn-primary:disabled { background: #CBD5E1; border-bottom-color: #94A3B8; cursor: not-allowed; }
+
+    .btn-secondary {
+      background: #E2E8F0; color: var(--ink); border: none; border-bottom: 4px solid #CBD5E1;
+      padding: 12px 18px; border-radius: 16px; font-family: inherit; font-size: 0.95rem; font-weight: 700; cursor: pointer;
+    }
+    .btn-secondary:active { transform: translateY(2px); }
+
+    .btn-voice {
+      background: var(--blue-soft); color: var(--blue-dark); border: 2px solid #BFDBFE;
+      padding: 8px 14px; border-radius: 999px; font-family: inherit; font-weight: 700;
+      font-size: 0.9rem; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+    }
+
+    /* WORKSPACE */
+    .workspace {
+      background: var(--card); border: 3px solid #E2E8F0; border-radius: 28px;
+      padding: 26px; box-shadow: var(--shadow);
+    }
+
+    .stage-nav { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; justify-content: center; }
+    .stage-pill {
+      padding: 8px 14px; border-radius: 999px; font-size: 0.85rem; font-weight: 700;
+      background: #F1F5F9; color: var(--muted); border: 2px solid transparent; cursor: pointer; font-family: inherit;
+    }
+    .stage-pill.active { background: var(--green-soft); color: var(--green-dark); border-color: var(--green); }
+    .stage-pill.done { background: #DCFCE7; color: #166534; }
+
+    .progress-header { display: flex; justify-content: space-between; align-items: center; font-size: 0.88rem; font-weight: 700; color: var(--muted); margin-bottom: 8px; }
+    .progress-segments { display: flex; gap: 6px; margin-bottom: 22px; }
+    .seg { flex: 1; height: 12px; border-radius: 999px; background: #E2E8F0; transition: background 0.25s; }
+    .seg.filled { background: var(--green); }
+    .seg.current { background: var(--blue); }
+
+    .focus-box {
+      background: #F8FAFC; border: 2px solid #E2E8F0; border-radius: 22px;
+      padding: 24px 20px; text-align: center;
+    }
+
+    .big-emoji { font-size: 3.3rem; margin-bottom: 10px; line-height: 1.1; }
+    .card-title { font-size: 1.38rem; font-weight: 800; margin-bottom: 10px; color: var(--ink); }
+    .card-text { font-size: 1.04rem; color: #334155; max-width: 650px; margin: 0 auto 14px; }
+
+    .highlight-note {
+      background: var(--amber-soft); border: 2px solid #FDE68A; color: var(--amber-dark);
+      padding: 12px 16px; border-radius: 16px; font-weight: 700; font-size: 0.95rem;
+      max-width: 620px; margin: 14px auto 0;
+    }
+
+    /* NUEVO: ESCENAS ILUSTRADAS SVG Y TARJETAS VISUALES DE CADENAS */
+    .scene-box {
+      max-width: 660px;
+      margin: 0 auto 16px;
+      background: white;
+      border: 3px solid #CBD5E1;
+      border-radius: 20px;
+      padding: 10px;
+      box-shadow: 0 5px 14px rgba(15, 23, 42, 0.06);
+      overflow: hidden;
+    }
+    .scene-box svg {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 14px;
+    }
+    .scene-caption {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    .visual-chain {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 10px auto 18px;
+      padding: 14px 12px;
+      background: #FFFFFF;
+      border: 3px solid #CBD5E1;
+      border-radius: 20px;
+      max-width: 720px;
+    }
+    .visual-chain.compact {
+      padding: 8px;
+      margin: 8px 0;
+      border-width: 2px;
+    }
+    .vc-card {
+      position: relative;
+      background: #F8FAFC;
+      border: 2.5px solid #CBD5E1;
+      border-radius: 16px;
+      padding: 10px 12px;
+      min-width: 104px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+    .visual-chain.compact .vc-card {
+      min-width: 78px;
+      padding: 6px 8px;
+    }
+    .vc-card.focus {
+      background: #EFF6FF;
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.18);
+    }
+    .vc-card.alert {
+      background: #FEF2F2;
+      border-color: var(--red);
+    }
+    .vc-card.up {
+      background: #ECFDF5;
+      border-color: var(--green);
+    }
+    .vc-card.extra {
+      background: #FFFBEB;
+      border-color: var(--amber);
+    }
+    .vc-emoji { font-size: 2rem; line-height: 1.1; }
+    .visual-chain.compact .vc-emoji { font-size: 1.35rem; }
+    .vc-label { font-size: 0.84rem; font-weight: 800; color: var(--ink); line-height: 1.2; }
+    .visual-chain.compact .vc-label { font-size: 0.74rem; }
+    .vc-badge {
+      font-size: 0.68rem;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: #E2E8F0;
+      color: #334155;
+      white-space: nowrap;
+    }
+    .vc-badge.red { background: #FEE2E2; color: #B91C1C; }
+    .vc-badge.green { background: #DCFCE7; color: #166534; }
+    .vc-badge.amber { background: #FEF3C7; color: #92400E; }
+    .vc-badge.blue { background: #DBEAFE; color: #1E40AF; }
+    .vc-arrow { font-size: 1.4rem; font-weight: 900; color: var(--amber-dark); }
+    .visual-chain.compact .vc-arrow { font-size: 1rem; }
+
+    /* OPTIONS GRID */
+    .options-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-top: 18px; }
+    .opt-btn {
+      background: white; border: 3px solid #CBD5E1; border-bottom-width: 6px; border-radius: 18px;
+      padding: 15px 14px; font-family: inherit; font-size: 0.98rem; font-weight: 700; color: var(--ink);
+      cursor: pointer; transition: transform 0.1s, border-color 0.15s, background 0.15s; text-align: center;
+    }
+    .opt-btn:hover:not(:disabled) { border-color: var(--blue); background: var(--blue-soft); }
+    .opt-btn:active:not(:disabled) { transform: translateY(2px); }
+    .opt-btn.correct { background: var(--green-soft); border-color: var(--green); color: var(--green-dark); }
+    .opt-btn.wrong { background: var(--red-soft); border-color: var(--red); color: #B91C1C; animation: shake 0.3s; }
+    .opt-btn.selected { background: var(--blue-soft); border-color: var(--blue); color: var(--blue-dark); }
+
+    .feedback-box {
+      margin-top: 18px; padding: 14px 18px; border-radius: 16px; font-weight: 700; display: none;
+      text-align: left; max-width: 660px; margin-left: auto; margin-right: auto;
+    }
+    .feedback-box.ok { display: block; background: var(--green-soft); border: 2px solid var(--green); color: #065F46; }
+    .feedback-box.hint { display: block; background: var(--amber-soft); border: 2px solid var(--amber); color: #92400E; }
+
+    /* FILL BLANK */
+    .blank-sentence { font-size: 1.16rem; font-weight: 700; line-height: 1.8; margin: 12px auto; max-width: 650px; }
+    .blank-slot {
+      display: inline-block; min-width: 150px; padding: 2px 14px; margin: 0 4px;
+      border-bottom: 4px dashed var(--blue); background: var(--blue-soft); border-radius: 10px;
+      color: var(--blue-dark); font-weight: 800;
+    }
+
+    /* CHAIN BUILDER */
+    .chain-slots {
+      display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 10px;
+      margin: 18px 0; min-height: 70px; padding: 14px; background: white; border: 2px dashed #94A3B8; border-radius: 18px;
+    }
+    .chain-node {
+      background: var(--green-soft); border: 2px solid var(--green); color: var(--green-dark);
+      padding: 10px 14px; border-radius: 14px; font-weight: 800; cursor: pointer;
+    }
+    .chain-arrow { font-size: 1.5rem; font-weight: 800; color: var(--amber-dark); }
+
+    .ws-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 22px; gap: 12px; flex-wrap: wrap; }
+
+    .grade-badge {
+      display: inline-block; font-size: 3rem; font-weight: 800; padding: 14px 32px; border-radius: 24px;
+      background: var(--green-soft); border: 4px solid var(--green); color: var(--green-dark); margin: 14px 0;
+    }
+    .pledge-input {
+      width: 100%; max-width: 560px; padding: 14px; border: 3px solid #CBD5E1; border-radius: 16px;
+      font-family: inherit; font-size: 1rem; margin: 10px auto; display: block;
+    }
+    .review-list { text-align: left; max-width: 680px; margin: 18px auto 0; display: flex; flex-direction: column; gap: 12px; }
+    .review-item { background: white; border: 2px solid #E2E8F0; border-radius: 16px; padding: 14px 16px; font-size: 0.93rem; }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-6px); }
+      75% { transform: translateX(6px); }
+    }
+
+    @media (max-width: 600px) {
+      .workspace { padding: 18px 14px; }
+      .focus-box { padding: 18px 12px; }
+      .card-title { font-size: 1.2rem; }
+      .vc-card { min-width: 84px; padding: 8px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand" onclick="goHome()">
+      <span class="brand-badge">🌿 Kaptia</span>
+      <span class="brand-title">Cadenas Alimentarias • Santi 4°B</span>
+    </div>
+    <div class="top-controls">
+      <button class="club-pill" id="header-club-btn" onclick="openFootballKingdom()" title="Ir al Reino del Fútbol">
+        ⚽ <span id="header-club-name">Magallanes</span>
+      </button>
+      <div class="points-pill" title="Puntos disponibles para fichajes">🏆 <span id="points-display">0</span> pts</div>
+      <button class="icon-btn" id="btn-sound" onclick="toggleSound()" title="Sonido">🔊</button>
+      <button class="icon-btn" onclick="toggleFont()" title="Agrandar letra">A+</button>
+      <button class="icon-btn" onclick="goHome()">🏠 Inicio</button>
+    </div>
+  </header>
+
+  <main id="app"></main>
+
+  <script src="modulo1.js"></script>
+  <script src="modulo2.js"></script>
+  <script src="modulo3.js"></script>
+  <script src="modulo4.js"></script>
+
+  <script>
+    // =========================================================================
+    // MOTOR KAPTIA — 100% AUTOSUFICIENTE Y VISUAL (CERO REFERENCIAS A GUÍAS)
+    // =========================================================================
+    const STORAGE_KEY = "kaptia_cadenas_santi_v1";
+
+    const DEFAULT_FOOTBALL = {
+      currentClubId: "magallanes",
+      highestTier: 0,
+      signedClubs: ["magallanes"],
+      history: [{ clubId: "magallanes", tier: 0, label: "Debut profesional" }]
+    };
+
+    const state = {
+      points: 0,
+      totalEarned: 0,
+      completedSteps: {},
+      repasosCount: { m1: 0, m2: 0, m3: 0 },
+      football: JSON.parse(JSON.stringify(DEFAULT_FOOTBALL)),
+      sound: true,
+      largeFont: false,
+      view: "home",
+      moduleId: null,
+      stepIdx: 0,
+      itemIdx: 0,
+      solvedCurrent: false,
+      rewardedInRun: new Set(),
+      selectedBlankWord: "",
+      chainOrder: [],
+      multiChecked: new Set(),
+      simQuestions: [],
+      simAnswers: []
+    };
+
+    function loadState() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+        if (saved) {
+          state.points = saved.points || 0;
+          state.totalEarned = saved.totalEarned || saved.points || 0;
+          state.completedSteps = saved.completedSteps || {};
+          state.repasosCount = saved.repasosCount || { m1: 0, m2: 0, m3: 0 };
+          if (saved.football && saved.football.currentClubId) state.football = saved.football;
+        }
+      } catch (e) {}
+      syncHeader();
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        points: state.points,
+        totalEarned: state.totalEarned,
+        completedSteps: state.completedSteps,
+        repasosCount: state.repasosCount,
+        football: state.football
+      }));
+      syncHeader();
+    }
+
+    function addPoints(n) { state.points += n; state.totalEarned += n; saveState(); }
+    function spendPoints(n) {
+      if (state.points < n) return false;
+      state.points -= n; saveState(); return true;
+    }
+
+    function syncHeader() {
+      document.getElementById("points-display").textContent = state.points;
+      document.getElementById("btn-sound").textContent = state.sound ? "🔊" : "🔇";
+      const clubBtn = document.getElementById("header-club-btn");
+      const clubNameEl = document.getElementById("header-club-name");
+      if (window.REINO_FUTBOL && clubNameEl) {
+        const club = window.REINO_FUTBOL.getClubById(state.football.currentClubId);
+        clubNameEl.textContent = club ? club.name : "Magallanes";
+        clubBtn.style.display = "flex";
+      } else if (clubBtn) {
+        clubBtn.style.display = "none";
+      }
+    }
+
+    function toggleSound() {
+      state.sound = !state.sound;
+      if (!state.sound && "speechSynthesis" in window) window.speechSynthesis.cancel();
+      syncHeader();
+    }
+
+    function toggleFont() {
+      state.largeFont = !state.largeFont;
+      document.body.classList.toggle("large-font", state.largeFont);
+    }
+
+    function playTone(type = "ok") {
+      if (!state.sound) return;
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = type === "fanfare" ? "triangle" : "sine";
+        const now = ctx.currentTime;
+        if (type === "fanfare") {
+          osc.frequency.setValueAtTime(523.25, now);
+          osc.frequency.setValueAtTime(659.25, now + 0.12);
+          osc.frequency.setValueAtTime(783.99, now + 0.24);
+          osc.frequency.setValueAtTime(1046.5, now + 0.36);
+          gain.gain.setValueAtTime(0.11, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.58);
+          osc.connect(gain); gain.connect(ctx.destination);
+          osc.start(now); osc.stop(now + 0.6);
+        } else {
+          osc.frequency.setValueAtTime(type === "ok" ? 660 : (type === "win" ? 780 : 320), now);
+          gain.gain.setValueAtTime(0.08, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+          osc.connect(gain); gain.connect(ctx.destination);
+          osc.start(now); osc.stop(now + 0.19);
+        }
+      } catch (e) {}
+    }
+
+    function speak(text) {
+      if (!state.sound || !("speechSynthesis" in window)) return;
+      window.speechSynthesis.cancel();
+      setTimeout(() => {
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = "es-CL";
+        u.rate = 0.94;
+        window.speechSynthesis.speak(u);
+      }, 50);
+    }
+
+    function shuffle(arr) {
+      const a = [...arr];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    // =========================================================================
+    // MOTOR DE ESCENAS ILUSTRADAS SVG + TARJETAS DE CADENAS ALIMENTARIAS
+    // =========================================================================
+    function renderSceneSVG(sceneId, focusTag = "") {
+      const hi = (name) => focusTag && focusTag.toLowerCase() === name.toLowerCase();
+      const boxStroke = (name) => hi(name) ? "#F59E0B" : "#CBD5E1";
+      const boxFill = (name) => hi(name) ? "#FEF3C7" : "#FFFFFF";
+      const strokeW = (name) => hi(name) ? "3.5" : "2";
+
+      if (sceneId === "altiplano") {
+        return `
+          <div class="scene-box">
+            <svg viewBox="0 0 640 240" aria-label="Ecosistema del Altiplano Chileno">
+              <defs>
+                <linearGradient id="skyAlt" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#BAE6FD"/><stop offset="100%" stop-color="#EFF6FF"/>
+                </linearGradient>
+              </defs>
+              <rect width="640" height="240" fill="url(#skyAlt)"/>
+              <!-- Cordillera de los Andes -->
+              <polygon points="0,155 110,60 220,155" fill="#94A3B8"/>
+              <polygon points="160,155 310,45 450,155" fill="#64748B"/>
+              <polygon points="380,155 530,58 640,155" fill="#94A3B8"/>
+              <polygon points="274,73 310,45 344,73 324,68 310,76 296,68" fill="#FFFFFF"/>
+              <!-- Suelo altiplánico y laguna -->
+              <rect x="0" y="145" width="640" height="95" fill="#D9F99D"/>
+              <ellipse cx="445" cy="182" rx="115" ry="24" fill="#38BDF8" opacity="0.65"/>
+
+              <!-- Cóndor -->
+              <g transform="translate(455,16)">
+                <rect width="128" height="44" rx="12" fill="${boxFill('Cóndor')}" stroke="${boxStroke('Cóndor')}" stroke-width="${strokeW('Cóndor')}"/>
+                <text x="24" y="29" font-size="24">🦅</text>
+                <text x="54" y="27" font-size="14" font-weight="800" fill="#1E293B">Cóndor</text>
+              </g>
+              <!-- Bacterias (Lupa al centro) -->
+              <g transform="translate(245,48)">
+                <circle cx="72" cy="54" r="46" fill="${boxFill('Bacterias')}" stroke="${boxStroke('Bacterias')}" stroke-width="${strokeW('Bacterias')}"/>
+                <text x="72" y="54" text-anchor="middle" font-size="30">🦠</text>
+                <text x="72" y="80" text-anchor="middle" font-size="13" font-weight="800" fill="#1E293B">Bacterias</text>
+              </g>
+              <!-- Guanacos -->
+              <g transform="translate(20,132)">
+                <rect width="142" height="48" rx="12" fill="${boxFill('Guanacos')}" stroke="${boxStroke('Guanacos')}" stroke-width="${strokeW('Guanacos')}"/>
+                <text x="20" y="33" font-size="26">🦙</text>
+                <text x="52" y="30" font-size="14" font-weight="800" fill="#1E293B">Guanacos</text>
+              </g>
+              <!-- Llaretas (plantas verdes) -->
+              <g transform="translate(192,182)">
+                <rect width="148" height="46" rx="12" fill="${boxFill('Llaretas')}" stroke="${boxStroke('Llaretas')}" stroke-width="${strokeW('Llaretas')}"/>
+                <text x="16" y="31" font-size="22">🌿🟢</text>
+                <text x="64" y="29" font-size="14" font-weight="800" fill="#065F46">Llaretas</text>
+              </g>
+              <!-- Flamencos -->
+              <g transform="translate(362,158)">
+                <rect width="148" height="46" rx="12" fill="${boxFill('Flamencos')}" stroke="${boxStroke('Flamencos')}" stroke-width="${strokeW('Flamencos')}"/>
+                <text x="18" y="31" font-size="24">🦩</text>
+                <text x="50" y="29" font-size="14" font-weight="800" fill="#1E293B">Flamencos</text>
+              </g>
+              <!-- Zorro -->
+              <g transform="translate(514,104)">
+                <rect width="112" height="46" rx="12" fill="${boxFill('Zorro')}" stroke="${boxStroke('Zorro')}" stroke-width="${strokeW('Zorro')}"/>
+                <text x="16" y="31" font-size="24">🦊</text>
+                <text x="50" y="29" font-size="14" font-weight="800" fill="#1E293B">Zorro</text>
+              </g>
+            </svg>
+            <div class="scene-caption">🏔️ Ecosistema del Altiplano Chileno: Llaretas (plantas), Guanacos, Cóndor, Zorro, Flamencos y Bacterias.</div>
+          </div>
+        `;
+      }
+
+      if (sceneId === "lago_toxico") {
+        return `
+          <div class="scene-box">
+            <svg viewBox="0 0 640 230" aria-label="Lago recibiendo desechos tóxicos de una empresa">
+              <rect width="640" height="115" fill="#E0F2FE"/>
+              <!-- Fábrica contaminando -->
+              <rect x="20" y="55" width="95" height="65" rx="6" fill="#475569"/>
+              <rect x="35" y="25" width="18" height="34" fill="#334155"/>
+              <circle cx="48" cy="18" r="10" fill="#94A3B8" opacity="0.8"/>
+              <circle cx="64" cy="12" r="13" fill="#CBD5E1" opacity="0.7"/>
+              <text x="67" y="96" text-anchor="middle" font-size="12" font-weight="800" fill="#FFFFFF">EMPRESA</text>
+              <!-- Tubería con desechos tóxicos -->
+              <rect x="112" y="96" width="58" height="14" rx="4" fill="#1E293B"/>
+              <path d="M168 103 Q195 106 198 138" stroke="#A855F7" stroke-width="12" fill="none" stroke-linecap="round"/>
+              <ellipse cx="204" cy="146" rx="42" ry="14" fill="#A855F7" opacity="0.65"/>
+              <text x="205" y="130" text-anchor="middle" font-size="12" font-weight="800" fill="#6B21A8">☠️ Desechos tóxicos</text>
+
+              <!-- Orillas y árboles -->
+              <rect x="0" y="112" width="150" height="18" fill="#4ADE80"/>
+              <rect x="495" y="108" width="145" height="22" fill="#4ADE80"/>
+              <text x="538" y="104" font-size="36">🌳</text>
+              <text x="582" y="106" font-size="28">🌾</text>
+
+              <!-- Aves volando / nadando -->
+              <text x="330" y="56" font-size="30">🕊️ 🦆</text>
+              <text x="380" y="108" font-size="26">🦆</text>
+
+              <!-- Lago con peces y plantas acuáticas -->
+              <rect x="0" y="124" width="640" height="106" fill="#38BDF8" opacity="0.75"/>
+              <ellipse cx="220" cy="162" rx="75" ry="26" fill="#9333EA" opacity="0.35"/>
+              <text x="275" y="176" font-size="28">🐟 🐠 🐟</text>
+              <text x="455" y="172" font-size="28">🐟</text>
+              <text x="150" y="216" font-size="26">🌿 🌱 🌿 🌱 🌿</text>
+              <text x="410" y="216" font-size="26">🌱 🌿 🌱</text>
+            </svg>
+            <div class="scene-caption">🏭 Una empresa arroja desechos tóxicos al lago donde viven peces, plantas acuáticas y aves.</div>
+          </div>
+        `;
+      }
+
+      if (sceneId === "petroleo") {
+        return `
+          <div class="scene-box">
+            <svg viewBox="0 0 640 210" aria-label="Barco derramando petróleo en el mar">
+              <rect width="640" height="100" fill="#DBEAFE"/>
+              <rect x="0" y="100" width="640" height="110" fill="#0284C7"/>
+              <!-- Barco -->
+              <text x="135" y="96" font-size="64">🚢</text>
+              <!-- Mancha negra de petróleo -->
+              <ellipse cx="320" cy="118" rx="150" ry="22" fill="#0F172A" opacity="0.9"/>
+              <ellipse cx="300" cy="136" rx="100" ry="18" fill="#1E293B" opacity="0.78"/>
+              <rect x="235" y="64" width="185" height="30" rx="12" fill="#FEF2F2" stroke="#EF4444" stroke-width="2"/>
+              <text x="327" y="84" text-anchor="middle" font-size="13" font-weight="800" fill="#991B1B">🛢️ Derrame de petróleo</text>
+              <!-- Fauna y flora marina afectada -->
+              <text x="115" y="182" font-size="30">🐟 🦀</text>
+              <text x="295" y="186" font-size="30">🐠 🌿 🐚</text>
+              <text x="485" y="180" font-size="30">⭐ 🌿</text>
+            </svg>
+            <div class="scene-caption">🚢 Un barco derrama petróleo en el océano donde habitan peces, mariscos y algas marinas.</div>
+          </div>
+        `;
+      }
+
+      if (sceneId === "chinchilla") {
+        return `
+          <div class="scene-box">
+            <svg viewBox="0 0 640 205" aria-label="Chinchilla y Reserva Nacional">
+              <rect width="640" height="205" fill="#ECFDF5"/>
+              <polygon points="0,155 170,45 340,155" fill="#A7F3D0"/>
+              <polygon points="260,155 460,38 640,155" fill="#6EE7B7"/>
+              <rect x="0" y="142" width="640" height="63" fill="#34D399"/>
+              <!-- Chinchilla -->
+              <rect x="44" y="54" width="235" height="110" rx="18" fill="#FFFFFF" stroke="#10B981" stroke-width="3"/>
+              <text x="161" y="112" text-anchor="middle" font-size="52">🐭</text>
+              <text x="161" y="142" text-anchor="middle" font-size="15" font-weight="800" fill="#1E293B">Chinchilla chilena</text>
+              <text x="161" y="158" text-anchor="middle" font-size="11" font-weight="700" fill="#B91C1C">⚠️ En peligro de extinción</text>
+              <!-- Reserva Nacional -->
+              <rect x="355" y="54" width="242" height="110" rx="18" fill="#FFFFFF" stroke="#059669" stroke-width="3"/>
+              <text x="476" y="110" text-anchor="middle" font-size="46">🛡️🌲</text>
+              <text x="476" y="142" text-anchor="middle" font-size="15" font-weight="800" fill="#065F46">Áreas Protegidas</text>
+              <text x="476" y="158" text-anchor="middle" font-size="11" font-weight="700" fill="#047857">Cuidan especies y su hábitat</text>
+            </svg>
+            <div class="scene-caption">🛡️ Protección de especies amenazadas (como la chinchilla) y áreas protegidas de Chile.</div>
+          </div>
+        `;
+      }
+
+      if (sceneId === "mar_veda") {
+        return `
+          <div class="scene-box">
+            <svg viewBox="0 0 640 190" aria-label="Protección de mariscos y período de veda">
+              <rect width="640" height="190" fill="#EFF6FF"/>
+              <rect x="0" y="118" width="640" height="72" fill="#38BDF8" opacity="0.5"/>
+              <rect x="170" y="26" width="300" height="136" rx="20" fill="#FFFFFF" stroke="#2563EB" stroke-width="3"/>
+              <text x="320" y="88" text-anchor="middle" font-size="48">🐚 🚫 🎣</text>
+              <text x="320" y="124" text-anchor="middle" font-size="15" font-weight="800" fill="#1E3A8A">Cuidado de Mariscos</text>
+              <text x="320" y="145" text-anchor="middle" font-size="12" font-weight="700" fill="#475569">Tiempo para que puedan reproducirse</text>
+            </svg>
+          </div>
+        `;
+      }
+
+      return "";
+    }
+
+    function renderVisualChain(chain, compact = false) {
+      if (!Array.isArray(chain) || chain.length === 0) return "";
+      return `
+        <div class="visual-chain ${compact ? 'compact' : ''}">
+          ${chain.map((node, i) => `
+            <div class="vc-card ${node.style || ''}">
+              ${node.badge ? `<span class="vc-badge ${node.badgeColor || ''}">${node.badge}</span>` : ""}
+              <span class="vc-emoji">${node.icon}</span>
+              <span class="vc-label">${node.label}</span>
+            </div>
+            ${i < chain.length - 1 ? `<span class="vc-arrow">${node.arrow || "➔"}</span>` : ""}
+          `).join("")}
+        </div>
+      `;
+    }
+
+    function renderVisualSupport(item, compact = false) {
+      let html = "";
+      if (item.scene && !compact) html += renderSceneSVG(item.scene, item.sceneFocus || item.name || "");
+      if (item.visualChain) html += renderVisualChain(item.visualChain, compact);
+      else if (!item.scene && item.icon && !compact) html += `<div class="big-emoji">${item.icon}</div>`;
+      return html;
+    }
+
+    // =========================================================================
+    // MÓDULOS Y NAVEGACIÓN
+    // =========================================================================
+    function getModules() {
+      return [
+        window.MODULO_1 || { id: "m1", locked: true, icon: "🌱", tag: "Etapa 1", title: "Roles en el Ecosistema", desc: "Agrega modulo1.js para activar." },
+        window.MODULO_2 || { id: "m2", locked: true, icon: "🦊", tag: "Etapa 2", title: "Cadenas Alimentarias y Efecto Dominó", desc: "Agrega modulo2.js para activar." },
+        window.MODULO_3 || { id: "m3", locked: true, icon: "🌊", tag: "Etapa 3", title: "Cuidado Ambiental y Simulador 7,0", desc: "Agrega modulo3.js para activar." }
+      ];
+    }
+
+    function getActiveModule() { return getModules().find(m => m.id === state.moduleId); }
+
+    function goHome() {
+      if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+      state.view = "home";
+      render();
+    }
+
+    function openFootballKingdom() {
+      if (!window.REINO_FUTBOL) return;
+      if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+      playTone("ok");
+      state.view = "football";
+      render();
+    }
+
+    function openModule(id) {
+      const mod = getModules().find(m => m.id === id);
+      if (!mod || mod.locked) return;
+      playTone("ok");
+      state.view = "module";
+      state.moduleId = id;
+      state.stepIdx = 0;
+      state.itemIdx = 0;
+      resetItemState();
+      prepareStepIfNeeded();
+      render();
+    }
+
+    function setStep(idx) {
+      playTone("ok");
+      state.view = "module";
+      state.stepIdx = idx;
+      state.itemIdx = 0;
+      resetItemState();
+      prepareStepIfNeeded();
+      render();
+    }
+
+    function resetItemState() {
+      state.solvedCurrent = false;
+      state.selectedBlankWord = "";
+      state.chainOrder = [];
+      state.multiChecked = new Set();
+    }
+
+    function prepareStepIfNeeded() {
+      state.rewardedInRun = new Set();
+      const mod = getActiveModule();
+      if (!mod) return;
+      const step = mod.steps[state.stepIdx];
+      if (!step) return;
+
+      if (Array.isArray(step.items)) {
+        step.items.forEach(it => {
+          delete it._shuffledOpts;
+          delete it._shuffledCats;
+          delete it._shuffledBank;
+          delete it._shuffledNodes;
+        });
+      }
+
+      if (step.type === "simulator") {
+        let pool = Array.isArray(step.items) ? [...step.items] : [];
+        state.simQuestions = shuffle(pool).map(q => ({
+          ...q,
+          shuffledOptions: shuffle(q.options)
+        }));
+        state.simAnswers = [];
+      }
+    }
+
+    function render() {
+      syncHeader();
+      const app = document.getElementById("app");
+      if (state.view === "home") renderHome(app);
+      else if (state.view === "football") window.REINO_FUTBOL.render(app);
+      else if (state.view === "step_done") renderStepDone(app);
+      else if (state.view === "sim_result") renderSimResult(app);
+      else renderWorkspace(app);
+    }
+
+    // =========================================================================
+    // PANTALLA DE INICIO
+    // =========================================================================
+    function renderHome(app) {
+      const mods = getModules();
+      const hasFootball = !!window.REINO_FUTBOL;
+      const curClub = hasFootball ? window.REINO_FUTBOL.getClubById(state.football.currentClubId) : null;
+      const nextTier = hasFootball ? window.REINO_FUTBOL.getNextTierInfo(state.football.highestTier) : null;
+      const canSignNext = nextTier && state.points >= nextTier.cost;
+
+      app.innerHTML = `
+        <section class="hero">
+          <h1>¡Hola Santi! 🦊 Vamos por ese 7,0</h1>
+          <p>Misión Ciencias: <strong>Cadenas Alimentarias en Ecosistemas Chilenos</strong>. Observa cada escena, entrena y acumula puntos para tu carrera futbolera.</p>
+        </section>
+        <section class="modules-grid">
+          ${mods.map(m => {
+            const totalSteps = m.steps ? m.steps.length : 0;
+            const doneSteps = m.steps ? m.steps.filter((_, i) => state.completedSteps[m.id + "_" + i]).length : 0;
+            const repasos = state.repasosCount[m.id] || 0;
+            return `
+              <div class="mod-card ${m.locked ? 'locked' : 'ready'}" onclick="${m.locked ? '' : `openModule('${m.id}')`}">
+                <div class="mod-icon">${m.icon}</div>
+                <span class="mod-tag ${m.locked ? 'tag-locked' : (m.tagClass || 'tag-green')}">${m.tag}</span>
+                <h2>${m.title}</h2>
+                <p>${m.desc}</p>
+                ${m.locked
+                  ? `<button class="btn-secondary" disabled>🔒 Pendiente de archivo</button>`
+                  : `<div style="font-size:0.84rem;font-weight:700;color:var(--green-dark);margin-bottom:4px;">
+                       Bloques: ${doneSteps}/${totalSteps} ${repasos > 0 ? `• Repasos: ${repasos} 🔄` : ''}
+                     </div>
+                     <button class="btn-primary">${doneSteps === totalSteps && totalSteps > 0 ? 'Repasar y sumar puntos ↻' : '¡Comenzar! ▶'}</button>`
+                }
+              </div>
+            `;
+          }).join("")}
+
+          ${hasFootball ? `
+            <div class="mod-card ready football-card" onclick="openFootballKingdom()">
+              <div class="mod-icon">⚽🏟️</div>
+              <span class="mod-tag tag-amber">Etapa 4 • Canje de Puntos</span>
+              <h2>Reino del Fútbol</h2>
+              <p>
+                Club actual: <strong>${curClub.name}</strong> (Nivel ${state.football.highestTier}/6).<br/>
+                ${nextTier
+                  ? (canSignNext
+                      ? `<strong style="color:var(--green-dark);">🎉 ¡Ya te alcanza para fichar en Nivel ${nextTier.tier} (${nextTier.cost} pts)!</strong>`
+                      : `Próximo fichaje: <strong>${nextTier.cost} pts</strong> (te faltan ${nextTier.cost - state.points} pts).`)
+                  : `<strong style="color:var(--amber-dark);">👑 ¡Llegaste a la élite del fútbol mundial!</strong>`
+                }
+              </p>
+              <button class="btn-primary">${canSignNext ? '✍️ ¡Ir a fichar ahora!' : '⚽ Entrar a mi Carrera'}</button>
+            </div>
+          ` : ""}
+        </section>
+        <div style="text-align:center;margin-top:26px;">
+          <button class="icon-btn" onclick="resetProgress()">🔄 Reiniciar puntaje, progreso y carrera</button>
+        </div>
+      `;
+    }
+
+    function resetProgress() {
+      if (confirm("¿Seguro que quieres reiniciar los puntos, el progreso y volver a Magallanes desde cero?")) {
+        state.points = 0;
+        state.totalEarned = 0;
+        state.completedSteps = {};
+        state.repasosCount = { m1: 0, m2: 0, m3: 0 };
+        state.football = JSON.parse(JSON.stringify(DEFAULT_FOOTBALL));
+        localStorage.removeItem("kaptia_pledge_santi");
+        saveState();
+        render();
+      }
+    }
+
+    // =========================================================================
+    // ÁREA DE TRABAJO (1 ESTÍMULO POR PANTALLA)
+    // =========================================================================
+    function renderWorkspace(app) {
+      const mod = getActiveModule();
+      const step = mod.steps[state.stepIdx];
+      const items = step.type === "simulator" ? state.simQuestions : step.items;
+      const item = items[state.itemIdx];
+      const total = items.length;
+
+      const stageButtons = mod.steps.map((s, idx) => {
+        const isDone = state.completedSteps[mod.id + "_" + idx];
+        return `<button class="stage-pill ${idx === state.stepIdx ? 'active' : (isDone ? 'done' : '')}" onclick="setStep(${idx})">${isDone ? '✅ ' : ''}${s.label}</button>`;
+      }).join("");
+
+      const segments = Array.from({ length: total }, (_, i) => {
+        const cls = i < state.itemIdx ? "filled" : (i === state.itemIdx ? (state.solvedCurrent ? "filled" : "current") : "");
+        return `<div class="seg ${cls}"></div>`;
+      }).join("");
+
+      let innerHTML = "";
+      if (step.type === "training") innerHTML = renderTrainingItem(item);
+      else if (step.type === "classify") innerHTML = renderClassifyItem(item, step);
+      else if (step.type === "quiz") innerHTML = renderQuizItem(item);
+      else if (step.type === "fill_blank") innerHTML = renderFillBlankItem(item);
+      else if (step.type === "chain_builder") innerHTML = renderChainBuilderItem(item);
+      else if (step.type === "multi_select") innerHTML = renderMultiSelectItem(item);
+      else if (step.type === "pledge") innerHTML = renderPledgeItem(item);
+      else if (step.type === "simulator") innerHTML = renderSimulatorItem(item);
+
+      const alreadyRewarded = state.rewardedInRun.has(state.itemIdx);
+      const canAdvance = step.type === "training" || state.solvedCurrent || alreadyRewarded;
+      const isLastItem = state.itemIdx + 1 >= total;
+
+      app.innerHTML = `
+        <div class="workspace">
+          <div class="stage-nav">${stageButtons}</div>
+          <div class="progress-header">
+            <span>${step.label}</span>
+            <span>${step.type === "simulator" ? "Pregunta" : "Tarjeta"} ${state.itemIdx + 1} de ${total}</span>
+          </div>
+          <div class="progress-segments">${segments}</div>
+          <div class="focus-box">${innerHTML}</div>
+          ${step.type !== "simulator" ? `
+            <div class="ws-footer">
+              <button class="btn-secondary" onclick="prevItem()">⬅ Anterior</button>
+              <button class="btn-primary" id="btn-next" ${canAdvance ? "" : "disabled"} onclick="nextItem()">
+                ${isLastItem ? "Terminar bloque 🏆" : "Siguiente ➔"}
+              </button>
+            </div>
+          ` : ""}
+        </div>
+      `;
+    }
+
+    function renderTrainingItem(item) {
+      const safeSpeech = esc(item.speech || `${item.title}. ${item.text}`);
+      return `
+        ${renderVisualSupport(item)}
+        <h2 class="card-title">${item.title}</h2>
+        <p class="card-text">${item.text}</p>
+        ${item.highlight ? `<div class="highlight-note">⭐ ${item.highlight}</div>` : ""}
+        <div style="margin-top:18px;">
+          <button class="btn-voice" onclick="speak('${safeSpeech}')">🔊 Escuchar explicación</button>
+        </div>
+      `;
+    }
+
+    function renderClassifyItem(item, step) {
+      if (!item._shuffledCats) item._shuffledCats = shuffle(item.categories || step.categories);
+      const cats = item._shuffledCats;
+      const safeSpeech = esc(`${item.prompt || 'Clasifica este organismo'}: ${item.name}`);
+      return `
+        ${renderVisualSupport(item)}
+        <div style="margin-bottom:8px;">
+          <button class="btn-voice" onclick="speak('${safeSpeech}')">🔊 Escuchar</button>
+        </div>
+        <h2 class="card-title">${item.icon && (item.scene || item.visualChain) ? item.icon + ' ' : ''}${item.name}</h2>
+        <p class="card-text">${item.prompt || "¿Qué rol cumple este organismo en el ecosistema?"}</p>
+        <div class="options-grid">
+          ${cats.map(cat => `
+            <button class="opt-btn" onclick="checkChoice(this, '${esc(cat)}', '${esc(item.correct)}', '${esc(item.hint)}', '${esc(item.explain)}')">${cat}</button>
+          `).join("")}
+        </div>
+        <div id="fb" class="feedback-box"></div>
+      `;
+    }
+
+    function renderQuizItem(item) {
+      if (!item._shuffledOpts) item._shuffledOpts = shuffle(item.options);
+      const safeSpeech = esc(item.question);
+      return `
+        ${renderVisualSupport(item)}
+        <div style="margin-bottom:8px;">
+          <button class="btn-voice" onclick="speak('${safeSpeech}')">🔊 Leer pregunta</button>
+        </div>
+        <h2 class="card-title">${item.question}</h2>
+        ${item.context ? `<p class="card-text">${item.context}</p>` : ""}
+        <div class="options-grid">
+          ${item._shuffledOpts.map(opt => `
+            <button class="opt-btn" onclick="checkChoice(this, '${esc(opt)}', '${esc(item.correct)}', '${esc(item.hint)}', '${esc(item.explain)}')">${opt}</button>
+          `).join("")}
+        </div>
+        <div id="fb" class="feedback-box"></div>
+      `;
+    }
+
+    function renderFillBlankItem(item) {
+      if (!item._shuffledBank) item._shuffledBank = shuffle(item.bank);
+      const displaySentence = item.sentence.replace("_____", `<span class="blank-slot" id="blank-slot">${state.selectedBlankWord || "?"}</span>`);
+      const safeSpeech = esc(item.sentence.replace("_____", "espacio en blanco"));
+      return `
+        ${renderVisualSupport(item)}
+        <div style="margin-bottom:8px;">
+          <button class="btn-voice" onclick="speak('${safeSpeech}')">🔊 Escuchar frase</button>
+        </div>
+        <p class="blank-sentence">${displaySentence}</p>
+        <p style="font-size:0.9rem;color:var(--muted);margin-bottom:6px;">Toca la palabra correcta para completar la frase:</p>
+        <div class="options-grid">
+          ${item._shuffledBank.map(w => `
+            <button class="opt-btn" onclick="checkFillBlank(this, '${esc(w)}', '${esc(item.correct)}', '${esc(item.hint)}', '${esc(item.explain)}')">${w}</button>
+          `).join("")}
+        </div>
+        <div id="fb" class="feedback-box"></div>
+      `;
+    }
+
+    function renderChainBuilderItem(item) {
+      if (!item._shuffledNodes) item._shuffledNodes = shuffle(item.correctOrder);
+      const builtHTML = state.chainOrder.length === 0
+        ? `<span style="color:var(--muted);font-weight:600;">Toca los organismos en orden (desde el productor que inicia el alimento)...</span>`
+        : state.chainOrder.map((n, idx) => `
+            <span class="chain-node" onclick="removeChainNode(${idx})" title="Toca para quitar">${n}</span>
+            ${idx < state.chainOrder.length - 1 ? `<span class="chain-arrow">➔</span>` : ""}
+          `).join("");
+
+      return `
+        <div class="big-emoji">${item.icon || "🔗"}</div>
+        <h2 class="card-title">${item.title}</h2>
+        <p class="card-text">${item.prompt}</p>
+        <div class="chain-slots">${builtHTML}</div>
+        <div class="options-grid">
+          ${item._shuffledNodes.map(n => {
+            const used = state.chainOrder.includes(n);
+            return `<button class="opt-btn ${used ? 'selected' : ''}" ${used ? 'disabled' : ''} onclick="addChainNode('${esc(n)}')">${n}</button>`;
+          }).join("")}
+        </div>
+        <div style="margin-top:16px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+          <button class="btn-secondary" onclick="clearChain()">🔄 Limpiar</button>
+          <button class="btn-primary" onclick="validateChain()">✅ Comprobar cadena</button>
+        </div>
+        <div id="fb" class="feedback-box"></div>
+      `;
+    }
+
+    function addChainNode(name) { if (!state.solvedCurrent) { state.chainOrder.push(name); render(); } }
+    function removeChainNode(idx) { if (!state.solvedCurrent) { state.chainOrder.splice(idx, 1); render(); } }
+    function clearChain() { if (!state.solvedCurrent) { state.chainOrder = []; render(); } }
+    function validateChain() {
+      const item = getActiveModule().steps[state.stepIdx].items[state.itemIdx];
+      const fb = document.getElementById("fb");
+      if (state.chainOrder.length < item.correctOrder.length) {
+        playTone("err");
+        fb.className = "feedback-box hint";
+        fb.innerHTML = "💡 Aún faltan organismos por ubicar en tu cadena alimentaria.";
+        return;
+      }
+      const ok = item.correctOrder.every((val, i) => state.chainOrder[i] === val);
+      if (ok) {
+        playTone("win");
+        fb.className = "feedback-box ok";
+        fb.innerHTML = `✅ ¡Exacto! ${item.explain}`;
+        markSolved(15);
+      } else {
+        playTone("err");
+        fb.className = "feedback-box hint";
+        fb.innerHTML = `💡 Pista de Detective: ${item.hint}`;
+      }
+    }
+
+    function renderMultiSelectItem(item) {
+      const safeSpeech = esc(`${item.question}. ${item.context}`);
+      return `
+        ${renderVisualSupport(item)}
+        <div style="margin-bottom:8px;">
+          <button class="btn-voice" onclick="speak('${safeSpeech}')">🔊 Escuchar actividad</button>
+        </div>
+        <h2 class="card-title">${item.question}</h2>
+        <p class="card-text">${item.context}</p>
+        <div class="options-grid" style="grid-template-columns:1fr;">
+          ${item.options.map((opt, idx) => {
+            const active = state.multiChecked.has(idx);
+            return `<button class="opt-btn ${active ? 'selected' : ''}" style="text-align:left;" onclick="toggleMulti(${idx})">
+              ${active ? '☑️' : '⬜'} ${opt.text}
+            </button>`;
+          }).join("")}
+        </div>
+        <div style="margin-top:16px;">
+          <button class="btn-primary" onclick="validateMulti()">✅ Comprobar mis ✓</button>
+        </div>
+        <div id="fb" class="feedback-box"></div>
+      `;
+    }
+
+    function toggleMulti(idx) {
+      if (state.solvedCurrent) return;
+      if (state.multiChecked.has(idx)) state.multiChecked.delete(idx);
+      else state.multiChecked.add(idx);
+      render();
+    }
+
+    function validateMulti() {
+      const item = getActiveModule().steps[state.stepIdx].items[state.itemIdx];
+      const fb = document.getElementById("fb");
+      const allCorrect = item.options.every((opt, idx) => opt.correct === state.multiChecked.has(idx));
+      if (allCorrect) {
+        playTone("win");
+        fb.className = "feedback-box ok";
+        fb.innerHTML = `✅ ¡Excelente predicción! ${item.explain}`;
+        markSolved(20);
+      } else {
+        playTone("err");
+        fb.className = "feedback-box hint";
+        fb.innerHTML = `💡 Pista de Detective: ${item.hint}`;
+      }
+    }
+
+    function renderPledgeItem(item) {
+      const savedPledge = localStorage.getItem("kaptia_pledge_santi") || "";
+      return `
+        <div class="big-emoji">🌍✍️</div>
+        <h2 class="card-title">${item.title}</h2>
+        <p class="card-text">${item.prompt}</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:10px;">
+          ${item.ideas.map(idea => `<button class="btn-voice" onclick="pickPledge('${esc(idea)}')">✨ ${idea}</button>`).join("")}
+        </div>
+        <input id="pledge-text" class="pledge-input" type="text" value="${savedPledge.replace(/"/g, '&quot;')}" placeholder="Me comprometo a..." />
+        <button class="btn-primary" onclick="savePledge()">🏅 Firmar como Santiago Cuevas</button>
+        <div id="fb" class="feedback-box ${state.solvedCurrent ? 'ok' : ''}">
+          ${state.solvedCurrent ? `🌟 ¡Excelente trabajo, Santiago Cuevas! Tu compromiso quedó firmado: <strong>"${savedPledge}"</strong>` : ""}
+        </div>
+      `;
+    }
+    function pickPledge(text) { document.getElementById("pledge-text").value = text; }
+    function savePledge() {
+      const val = document.getElementById("pledge-text").value.trim();
+      const fb = document.getElementById("fb");
+      if (val.length < 5) {
+        fb.className = "feedback-box hint";
+        fb.innerHTML = "💡 Escribe o elige una acción para cuidar los ecosistemas antes de firmar.";
+        return;
+      }
+      localStorage.setItem("kaptia_pledge_santi", val);
+      playTone("win");
+      const earnedNow = !state.rewardedInRun.has(state.itemIdx);
+      markSolved(25);
+      fb.className = "feedback-box ok";
+      fb.innerHTML = `🌟 ¡Excelente trabajo, Santiago Cuevas! Tu compromiso quedó guardado: <strong>"${val}"</strong> ${earnedNow ? "(+25 pts)" : ""}`;
+    }
+
+    // --- SIMULADOR DE PRUEBA REAL (CON ESCENA / CADENA EN CADA PREGUNTA) ---
+    function renderSimulatorItem(q) {
+      const safeSpeech = esc(q.question);
+      return `
+        <span class="mod-tag tag-purple" style="margin-bottom:12px;">🏆 Modo Prueba Real — Observa bien la imagen antes de responder</span>
+        ${renderVisualSupport(q)}
+        <div style="margin:6px 0 10px;">
+          <button class="btn-voice" onclick="speak('${safeSpeech}')">🔊 Escuchar pregunta</button>
+        </div>
+        <h2 class="card-title">${q.question}</h2>
+        <div class="options-grid">
+          ${q.shuffledOptions.map(opt => `
+            <button class="opt-btn" onclick="answerSim('${esc(opt)}')">${opt}</button>
+          `).join("")}
+        </div>
+      `;
+    }
+
+    function answerSim(chosen) {
+      const q = state.simQuestions[state.itemIdx];
+      const isOk = chosen === q.correct;
+      playTone(isOk ? "ok" : "err");
+      state.simAnswers.push({
+        question: q.question,
+        visualChain: q.visualChain || null,
+        scene: q.scene || null,
+        chosen,
+        correct: q.correct,
+        isOk,
+        explain: q.explain
+      });
+      if (state.itemIdx + 1 < state.simQuestions.length) {
+        state.itemIdx++;
+        render();
+      } else {
+        const mod = getActiveModule();
+        state.completedSteps[mod.id + "_" + state.stepIdx] = true;
+        checkModuleRepasoCompleted(mod);
+        const okCount = state.simAnswers.filter(a => a.isOk).length;
+        addPoints(okCount * 10);
+        state.view = "sim_result";
+        render();
+      }
+    }
+
+    function renderSimResult(app) {
+      const total = state.simAnswers.length;
+      const okCount = state.simAnswers.filter(a => a.isOk).length;
+      const pct = Math.round((okCount / total) * 100);
+      let grade = 1.0;
+      if (okCount >= 0.6 * total) grade = 4.0 + 3.0 * ((okCount - 0.6 * total) / (0.4 * total));
+      else grade = 1.0 + 3.0 * (okCount / (0.6 * total));
+      const gradeStr = grade.toFixed(1).replace(".", ",");
+      const misses = state.simAnswers.filter(a => !a.isOk);
+
+      app.innerHTML = `
+        <div class="workspace" style="text-align:center;">
+          <div class="big-emoji">${grade >= 6.0 ? "🏆🌟" : (grade >= 4.0 ? "👏📘" : "💪🔎")}</div>
+          <h2 class="card-title">Resultado de tu Simulación de Prueba</h2>
+          <p class="card-text">Respondiste correctamente <strong>${okCount} de ${total}</strong> preguntas (${pct}%).</p>
+          <div class="grade-badge">Nota: ${gradeStr}</div>
+          <p class="card-text">Ganaste <strong>+${okCount * 10} puntos</strong> para el Reino del Fútbol (ahora tienes <strong>${state.points} pts</strong> disponibles).</p>
+          ${misses.length > 0 ? `
+            <h3 style="margin-top:20px;font-size:1.1rem;">🔎 Repasemos visualmente las que fallaste para llegar al 7,0:</h3>
+            <div class="review-list">
+              ${misses.map(m => `
+                <div class="review-item">
+                  <strong>${m.question}</strong>
+                  ${m.visualChain ? renderVisualChain(m.visualChain, true) : ""}
+                  <div style="margin-top:6px;">
+                    <span style="color:#B91C1C;font-weight:700;">❌ Tu respuesta: ${m.chosen}</span><br/>
+                    <span style="color:#065F46;font-weight:700;">✅ Correcta: ${m.correct}</span><br/>
+                    <span style="color:#475569;">💡 ${m.explain}</span>
+                  </div>
+                </div>
+              `).join("")}
+            </div>
+          ` : `<div class="highlight-note">🎉 ¡PERFECTO, SANTI! Dominaste el 100% de la materia sin ningún error.</div>`}
+          <div style="margin-top:24px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+            <button class="btn-secondary" onclick="goHome()">🏠 Menú principal</button>
+            ${window.REINO_FUTBOL ? `<button class="btn-primary" onclick="openFootballKingdom()">⚽ Ir al Reino del Fútbol</button>` : ""}
+            <button class="btn-secondary" onclick="setStep(state.stepIdx)">🔄 Nuevo intento (orden mezclado)</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function esc(str) {
+      return String(str || "").replace(/\\/g, "\\\\").replace(/'/g, "\\'").replace(/"/g, "&quot;");
+    }
+
+    function checkChoice(btn, chosen, correct, hint, explain) {
+      if (state.solvedCurrent) return;
+      const fb = document.getElementById("fb");
+      if (chosen === correct) {
+        btn.classList.add("correct");
+        playTone("win");
+        fb.className = "feedback-box ok";
+        fb.innerHTML = `✅ ¡Muy bien, Santi! ${explain}`;
+        markSolved(10);
+      } else {
+        btn.classList.add("wrong");
+        btn.disabled = true;
+        playTone("err");
+        fb.className = "feedback-box hint";
+        fb.innerHTML = `💡 Pista de Detective: ${hint}`;
+      }
+    }
+
+    function checkFillBlank(btn, chosen, correct, hint, explain) {
+      if (state.solvedCurrent) return;
+      const slot = document.getElementById("blank-slot");
+      if (slot) slot.textContent = chosen;
+      state.selectedBlankWord = chosen;
+      checkChoice(btn, chosen, correct, hint, explain);
+    }
+
+    function markSolved(pts) {
+      state.solvedCurrent = true;
+      if (!state.rewardedInRun.has(state.itemIdx)) {
+        state.rewardedInRun.add(state.itemIdx);
+        addPoints(pts);
+      }
+      const nextBtn = document.getElementById("btn-next");
+      if (nextBtn) nextBtn.disabled = false;
+    }
+
+    function checkModuleRepasoCompleted(mod) {
+      const allDone = mod.steps.every((_, i) => state.completedSteps[mod.id + "_" + i]);
+      if (allDone && state.stepIdx === mod.steps.length - 1) {
+        state.repasosCount[mod.id] = (state.repasosCount[mod.id] || 0) + 1;
+      }
+    }
+
+    function prevItem() {
+      if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+      if (state.itemIdx > 0) {
+        state.itemIdx--;
+        resetItemState();
+        render();
+      } else if (state.stepIdx > 0) {
+        setStep(state.stepIdx - 1);
+      } else {
+        goHome();
+      }
+    }
+
+    function nextItem() {
+      if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+      const mod = getActiveModule();
+      const step = mod.steps[state.stepIdx];
+      if (step.type === "training" && !state.rewardedInRun.has(state.itemIdx)) {
+        state.rewardedInRun.add(state.itemIdx);
+        addPoints(5);
+      }
+      if (state.itemIdx + 1 < step.items.length) {
+        state.itemIdx++;
+        resetItemState();
+        render();
+      } else {
+        state.completedSteps[mod.id + "_" + state.stepIdx] = true;
+        checkModuleRepasoCompleted(mod);
+        saveState();
+        playTone("win");
+        state.view = "step_done";
+        render();
+      }
+    }
+
+    function renderStepDone(app) {
+      const mod = getActiveModule();
+      const step = mod.steps[state.stepIdx];
+      const hasNextStep = state.stepIdx + 1 < mod.steps.length;
+      const nextTier = window.REINO_FUTBOL ? window.REINO_FUTBOL.getNextTierInfo(state.football.highestTier) : null;
+      const readyToSign = nextTier && state.points >= nextTier.cost;
+
+      app.innerHTML = `
+        <div class="workspace" style="text-align:center;">
+          <div class="big-emoji">🎉🏆</div>
+          <h2 class="card-title">¡Bloque completado, Santi!</h2>
+          <p class="card-text">Terminaste <strong>${step.label}</strong> y tienes <strong>${state.points} puntos</strong> disponibles.</p>
+          ${readyToSign
+            ? `<div class="highlight-note">⚽ ¡Atención, crack! Ya tienes puntos suficientes para fichar por un equipo de <strong>Nivel ${nextTier.tier}</strong> en el Reino del Fútbol.</div>`
+            : `<div class="highlight-note">💧 Pausa activa opcional: estira los brazos o toma un sorbo de agua antes de seguir.</div>`
+          }
+          <div style="margin-top:24px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+            <button class="btn-secondary" onclick="goHome()">🏠 Menú principal</button>
+            ${readyToSign ? `<button class="btn-primary" onclick="openFootballKingdom()">⚽ Ir a fichar ahora</button>` : ""}
+            ${hasNextStep
+              ? `<button class="btn-primary" onclick="setStep(${state.stepIdx + 1})">Continuar al siguiente bloque ➔</button>`
+              : `<button class="btn-primary" onclick="goHome()">🌟 ¡Etapa completada! Ver menú</button>`
+            }
+          </div>
+        </div>
+      `;
+    }
+
+    loadState();
+    render();
+  </script>
+</body>
+</html>
